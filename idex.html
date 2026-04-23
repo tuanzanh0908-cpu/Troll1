@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giai Điệu Vui Nhộn</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 3rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Hiệu ứng đĩa nhạc */
+        .disc-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 30px;
+        }
+
+        .disc {
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, #333 30%, #111 100%);
+            border-radius: 50%;
+            border: 8px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: rotate 4s linear infinite;
+            animation-play-state: paused;
+        }
+
+        /* Tâm đĩa nhạc */
+        .disc::after {
+            content: '';
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .playing .disc {
+            animation-play-state: running;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        audio {
+            width: 100%;
+            filter: invert(100%); /* Làm bộ điều khiển màu trắng cho hợp tone */
+            opacity: 0.8;
+        }
+
+        .status-text {
+            margin-top: 15px;
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="player-container">
+    <h1>Vibe Check ✅</h1>
+    
+    <div class="disc-wrapper">
+        <div class="disc"></div>
+    </div>
+
+    <audio id="myAudio" controls>
+        <source src="ssstik.io_1776920519240.mp3" type="audio/mpeg">
+        Trình duyệt không hỗ trợ audio.
+    </audio>
+
+    <p class="status-text" id="status">Nhấn Play để quẩy!</p>
+</div>
+
+<script>
+    const audio = document.getElementById('myAudio');
+    const container = document.getElementById('player-container');
+    const status = document.getElementById('status');
+
+    audio.onplay = () => {
+        container.classList.add('playing');
+        status.innerText = "Đang phát...";
+    };
+
+    audio.onpause = () => {
+        container.classList.remove('playing');
+        status.innerText = "Đã tạm dừng.";
+    };
+</script>
+
+</body>
+</html>

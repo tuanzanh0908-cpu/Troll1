@@ -3,93 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giai Điệu Vui Nhộn</title>
+    <title>Giai Điệu Vui Nhộn - Max Volume</title>
     <style>
         body {
             margin: 0;
             padding: 0;
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            background: #000; /* Nền đen cho nổi bật */
+            background: #000;
             font-family: 'Segoe UI', sans-serif;
             overflow: hidden;
+            cursor: pointer; /* Hiển thị biểu tượng bàn tay để khuyến khích click */
         }
 
-        .container {
+        .visualizer {
             text-align: center;
-            color: white;
-            z-index: 2;
+            color: #fff;
         }
 
-        /* Hiệu ứng đĩa nhạc xoay liên tục */
-        .disc {
-            width: 250px;
-            height: 250px;
-            background: radial-gradient(circle, #444 20%, #111 100%);
+        /* Hiệu ứng vòng tròn rung động theo nhịp nhạc */
+        .circle {
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, #ff0000 10%, #000 100%);
             border-radius: 50%;
-            border: 10px solid #222;
-            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: rotate 3s linear infinite;
+            margin-bottom: 20px;
+            animation: pulse 0.5s infinite alternate;
+            box-shadow: 0 0 50px #ff0000;
         }
 
-        .disc::after {
-            content: '';
-            width: 60px;
-            height: 60px;
-            background: #fff;
-            border-radius: 50%;
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 0.8; }
+            to { transform: scale(1.2); opacity: 1; }
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .hint {
-            margin-top: 20px;
+        h1 {
             font-size: 1.2rem;
-            color: #ff4757;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
+            letter-spacing: 5px;
+            color: #ff4757;
+            text-shadow: 0 0 10px #ff4757;
+        }
+
+        p {
+            color: #888;
+            font-size: 0.9rem;
         }
     </style>
 </head>
-<body onclick="enableAudio()"> <div class="container">
-    <div class="disc"></div>
-    <div class="hint" id="status">Nhấn vào đây để nghe nhạc! 🎵</div>
-    
-    <audio id="myAudio" loop autoplay muted>
+<body onclick="startParty()">
+
+    <div class="visualizer">
+        <div class="circle"></div>
+        <h1 id="text">Chạm để quẩy!</h1>
+        <p>(Âm lượng đã được đặt mức cao nhất)</p>
+    </div>
+
+    <audio id="audioPlayer" loop>
         <source src="ssstik.io_1776920519240.mp3" type="audio/mpeg">
     </audio>
-</div>
 
-<script>
-    const audio = document.getElementById('myAudio');
-    const status = document.getElementById('status');
+    <script>
+        const audio = document.getElementById('audioPlayer');
+        const text = document.getElementById('text');
 
-    // Hàm này sẽ chạy khi người dùng click vào trang web
-    function enableAudio() {
-        if (audio.muted) {
-            audio.muted = false; // Mở tiếng
-            audio.play();        // Đảm bảo nhạc phát
-            status.innerText = "Đang quẩy cực căng! 🔥";
-            status.style.color = "#2ed573";
-        }
-    }
-
-    // Cố gắng phát nhạc ngay khi load (thường sẽ ở chế độ muted)
-    window.addEventListener('load', () => {
-        audio.play().catch(error => {
-            console.log("Trình duyệt yêu cầu tương tác để phát nhạc.");
+        // Cố gắng phát ngay khi load (thường sẽ bị trình duyệt chặn cho đến khi click)
+        window.addEventListener('load', () => {
+            audio.volume = 1.0; // Thiết lập âm lượng cao nhất (từ 0.0 đến 1.0)
+            audio.play().catch(() => {
+                console.log("Chờ người dùng tương tác để phát âm thanh...");
+            });
         });
-    });
-</script>
 
+        function startParty() {
+            audio.volume = 1.0; // Đảm bảo âm lượng luôn ở mức 100%
+            audio.play();
+            text.innerText = "ĐANG PHÁT MAX VOLUME! 🔥";
+            
+            // Hiệu ứng đổi màu nền ngẫu nhiên theo nhịp
+            setInterval(() => {
+                const colors = ['#1e1e1e', '#000000', '#2d0000'];
+                document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            }, 100);
+        }
+    </script>
 </body>
 </html>
